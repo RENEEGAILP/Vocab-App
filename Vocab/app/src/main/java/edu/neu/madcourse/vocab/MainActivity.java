@@ -23,12 +23,14 @@ public class MainActivity extends AppCompatActivity {
 
     public void onLoginClick(View view)
     {
+        //Launch Login Activity
         Intent intent = new Intent(this,LoginActivity.class);
         startActivity( intent );
     }
 
     public void onRegisterClick(View view)
     {
+        //Launch registration activity for new user
         Intent intent = new Intent(this,RegistrationActivity.class);
         startActivity( intent );
     }
