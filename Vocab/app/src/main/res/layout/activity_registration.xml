@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".RegistrationActivity">
@@ -75,10 +76,10 @@
         android:inputType="textPassword"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.436"
+        app:layout_constraintHorizontal_bias="0.417"
         app:layout_constraintStart_toEndOf="@+id/password_textView"
         app:layout_constraintTop_toBottomOf="@+id/emailid_register_editText"
-        app:layout_constraintVertical_bias="0.011" />
+        app:layout_constraintVertical_bias="0.032" />
 
     <TextView
         android:id="@+id/password_textView"
@@ -115,8 +116,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/password_register_password"
         app:layout_constraintVertical_bias="0.161"
-        app:srcCompat="@color/blue_logo"
-        tools:srcCompat="@tools:sample/avatars[0]" />
+        app:srcCompat="@drawable/ic_action_profile" />
 
     <ProgressBar
         android:id="@+id/progressBar"
