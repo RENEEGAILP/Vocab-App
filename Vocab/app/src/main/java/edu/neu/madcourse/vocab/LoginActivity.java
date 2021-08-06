@@ -3,6 +3,7 @@ package edu.neu.madcourse.vocab;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -61,6 +62,13 @@ public class LoginActivity extends AppCompatActivity {
                 if(task.isSuccessful()) {
                     Log.d( "Login","signInWithEmailAndPassword:success");
                     FirebaseUser user = m_Auth.getCurrentUser();
+
+                    if(email_id.equals( "admin@vocab.com" ))
+                    {
+                        Intent intent = new Intent(LoginActivity.this,AdminActivity.class);
+                        startActivity( intent );
+                    }
+
                 }
                 else {
                     Log.w("Login", "signInWithEmailAndPassword:failure", task.getException());
