@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -74,13 +75,20 @@ public class AddWordActivity extends AppCompatActivity {
         documentReference.set( wordObj ).addOnSuccessListener( new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
+
                 Log.d( "Add word","Word added :  " + word);
+                Toast.makeText( AddWordActivity.this,"Word Added" , Toast.LENGTH_SHORT)
+                        .show();
+                //need to reset to empty.
             }
         } )
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
+
                         Log.d("Add word", "Failed");
+                        Toast.makeText( AddWordActivity.this,"Word cannot be added" , Toast.LENGTH_SHORT)
+                                .show();
                     }
                 });
     }

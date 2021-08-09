@@ -69,6 +69,10 @@ public class LoginActivity extends AppCompatActivity {
                         startActivity( intent );
                     }
 
+                    Intent intent = new Intent(LoginActivity.this,QuizLandingActivity.class);
+                    startActivity( intent );
+
+
                 }
                 else {
                     Log.w("Login", "signInWithEmailAndPassword:failure", task.getException());

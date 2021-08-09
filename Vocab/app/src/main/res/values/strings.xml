@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Vocab</string>
+    <string name="true_button">True</string>
+    <string name="false_button">False</string>
+    <string name="next_button">Next</string>
+    <string name="question1">"Autumn" is the season where leaves fall.</string>
+    <string name="question2">"Anomaly" means something that is unusual or unexpected.</string>
+    <string name="question3">"Prodigal" means to show great knowledge.</string>
+    <string name="question4">"Venerate" is to regard with great respect.</string>
 </resources>

@@ -17,7 +17,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Vocab">
-        <activity android:name=".AddWordActivity"></activity>
+        <activity android:name=".QuizLandingActivity"></activity>
+        <activity android:name=".QuizActivity" />
+        <activity android:name=".AddWordActivity" />
         <activity android:name=".AdminActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".RegistrationActivity" />
