@@ -102,7 +102,6 @@ public class RegistrationActivity extends AppCompatActivity {
         if (hasCamera()){
             Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             try {
-                takePictureIntent.setType("image/*");
                 startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
             } catch (ActivityNotFoundException e) {
                 // display error state to the user
@@ -119,7 +118,6 @@ public class RegistrationActivity extends AppCompatActivity {
     private void uploadImage() {
         Intent intent = new Intent(Intent.ACTION_PICK,
                 android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-        intent.setType("image/*");
         startActivityForResult(intent,GET_FROM_GALLERY);
 
     }
