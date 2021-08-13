@@ -9,4 +9,14 @@
     <string name="question4">"Venerate" is to regard with great respect.</string>
     <string name="open">open</string>
     <string name="close">close</string>
+
+    <string name="users_db_name">"Name"</string>
+    <string name="users_db_email">"Email"</string>
+    <string name="users_db_profile">"ProfilePic"</string>
+    <string name="users_db_score">"Score"</string>
+    <string name="users_db_beginner">"Beginner"</string>
+    <string name="users_db_intermediate">"Intermediate"</string>
+    <string name="users_db_expert">"Expert"</string>
+    <string name="users_db_advanced">"Advanced"</string>
+
 </resources>
