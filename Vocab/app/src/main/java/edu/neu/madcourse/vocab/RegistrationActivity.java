@@ -113,12 +113,14 @@ public class RegistrationActivity extends AppCompatActivity {
              Snackbar.make(findViewById( R.id.layout ), "No Camera found. Please try to upload!",
                     Snackbar.LENGTH_LONG).show();
         }
+        m_alertDialog.hide();
     }
 
     private void uploadImage() {
         Intent intent = new Intent(Intent.ACTION_PICK,
                 android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
         startActivityForResult(intent,GET_FROM_GALLERY);
+        m_alertDialog.hide();
 
     }
 
