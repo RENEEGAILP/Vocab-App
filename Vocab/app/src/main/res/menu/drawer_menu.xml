@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/profile_menuitem"
+        android:icon="@drawable/ic_baseline_account_circle_24"
+        android:title="Profile" />
+    <item
+        android:id="@+id/history_menuitem"
+        android:icon="@drawable/ic_baseline_history_24"
+        android:title="History" />
+    <item
+        android:id="@+id/logout_menuitem"
+        android:title="Logout" />
+</menu>

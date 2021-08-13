@@ -1,6 +1,7 @@
 package edu.neu.madcourse.vocab;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Base64;
 import android.util.Log;
 
@@ -13,15 +14,17 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+
 import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Users {
+
     private String m_name;
     private String m_emailId;
     private Bitmap m_profileImage;
-    private int m_score;
+    private long m_score;
     private boolean m_beginner;
     private boolean m_intermediate;
     private boolean m_expert;
@@ -29,6 +32,24 @@ public class Users {
 
     private FirebaseFirestore m_firestore;
     private FirebaseAuth m_auth;
+
+
+    public Users()
+    {
+        m_name = null;
+        m_emailId = null;
+        m_profileImage = null;
+        m_score = -1;
+        m_beginner = false;
+        m_advanced = false;
+        m_intermediate = false;
+        m_expert = false;
+
+        m_firestore = FirebaseFirestore.getInstance();
+        m_auth = FirebaseAuth.getInstance();
+
+
+    }
 
     public Users(String name, String emailId,Bitmap profileImage) {
         m_name = name;
@@ -42,6 +63,7 @@ public class Users {
 
         m_firestore = FirebaseFirestore.getInstance();
         m_auth = FirebaseAuth.getInstance();
+
     }
 
     public void createUser()
@@ -81,5 +103,12 @@ public class Users {
         scaledImageBitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
         return Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);
     }
+
+    private Bitmap getDecodedBitmapFromString(String imageEncoded) {
+        byte[] decodedByteArray = Base64.decode(imageEncoded, Base64.DEFAULT);
+        return BitmapFactory.decodeByteArray(decodedByteArray, 0, decodedByteArray.length);
+    }
+
+
 
 }

@@ -7,4 +7,6 @@
     <string name="question2">"Anomaly" means something that is unusual or unexpected.</string>
     <string name="question3">"Prodigal" means to show great knowledge.</string>
     <string name="question4">"Venerate" is to regard with great respect.</string>
+    <string name="open">open</string>
+    <string name="close">close</string>
 </resources>
