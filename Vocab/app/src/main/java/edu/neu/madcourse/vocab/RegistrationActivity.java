@@ -110,8 +110,8 @@ public class RegistrationActivity extends AppCompatActivity {
             }
         }
         else{
-            //Snackbar.make(mRecyclerView, "Device does not have camera", Snackbar.LENGTH_LONG).show();
-            //TODO : Error Handling
+             Snackbar.make(findViewById( R.id.layout ), "No Camera found. Please try to upload!",
+                    Snackbar.LENGTH_LONG).show();
         }
     }
 
@@ -158,6 +158,11 @@ public class RegistrationActivity extends AppCompatActivity {
         BitmapDrawable drawable = (BitmapDrawable) m_imageView.getDrawable();
         Bitmap profile_image = drawable.getBitmap();
 
+        if (TextUtils.isEmpty(name))
+        {
+            m_name.setError("Full name is required");
+            return;
+        }
         if(TextUtils.isEmpty( email_id ))
         {
             m_emailID.setError( "Email is required" );
@@ -168,14 +173,14 @@ public class RegistrationActivity extends AppCompatActivity {
             m_password.setError( "Password is required" );
             return;
         }
-        if(TextUtils.isDigitsOnly( password ) || TextUtils.isGraphic( password ) || password.length() < 8)
+        if (password.length() < 6)
         {
-            //Todo : Password restrictions
-            //m_password.setError( "Password must contain both letters and digits. Minimum length should be 8" );
-            //return;
+            m_password.setError("Password must be at least 6 characters");
+            return;
         }
 
         m_progressBar.setVisibility( View.VISIBLE );
+
         mAuth.createUserWithEmailAndPassword( email_id, password )
                 .addOnCompleteListener( this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -187,14 +192,15 @@ public class RegistrationActivity extends AppCompatActivity {
                             Users user = new Users( name,email_id,profile_image );
                             user.createUser();
                             m_progressBar.setVisibility( View.INVISIBLE );
-
+                            Snackbar.make(view, "Successfully created user! Please login.", Snackbar.LENGTH_LONG).show();
+                            startActivity(new Intent(getApplicationContext(),LoginActivity.class));
 
                         } else {
                             // If sign in fails, display a message to the user.
+                            m_progressBar.setVisibility( View.INVISIBLE );
                             Log.w("Register", "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(RegistrationActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
-                            //TODO: Error handling
+                            Snackbar.make(view, "Error in registration: " + task.getException().getMessage(),
+                                    Snackbar.LENGTH_LONG).show();
                         }
                     }
                 } );
@@ -207,8 +213,7 @@ public class RegistrationActivity extends AppCompatActivity {
             return true;
         }
         else {
-            //Snackbar.make(mRecyclerView, "Device does not have camera!", Snackbar.LENGTH_LONG).show();
-            //TODO : Error handling
+            Log.w("Camera", "No camera found!");
             return false;
         }
     }
