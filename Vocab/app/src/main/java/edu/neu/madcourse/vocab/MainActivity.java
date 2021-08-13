@@ -13,7 +13,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_main );
-
+        //getSupportActionBar().hide();
         Button loginButton = findViewById( R.id.login_button );
         Button registerButton = findViewById( R.id.register_button );
 
