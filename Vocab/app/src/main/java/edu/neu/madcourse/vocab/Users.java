@@ -29,7 +29,6 @@ public class Users {
         m_name = name;
         m_emailId = emailId;
         m_profileImage = profileImage;
-
         m_firestore = FirebaseFirestore.getInstance();
         m_auth = FirebaseAuth.getInstance();
     }

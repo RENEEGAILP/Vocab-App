@@ -2,11 +2,17 @@ package edu.neu.madcourse.vocab;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class QuizActivity extends AppCompatActivity {
 
@@ -15,12 +21,15 @@ public class QuizActivity extends AppCompatActivity {
     private Button mNextButton;
     private TextView questionTextView;
     private int mCurrentIndex = 0;
+    private int score=0;
+    FirebaseAuth m_auth;
+    FirebaseUser user;
 
     private Questions[] mQuestionBank = new Questions[]{
             new Questions(R.string.question1, true),
-            new Questions(R.string.question2, false),
-            new Questions(R.string.question3, true),
-            new Questions(R.string.question4, false)
+            new Questions(R.string.question2, true),
+            new Questions(R.string.question3, false),
+            new Questions(R.string.question4, true)
     };
 
 
@@ -49,6 +58,7 @@ public class QuizActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (mCurrentIndex == 3) {
+                    updatescore();
                     Toast.makeText(QuizActivity.this, "Quiz Completed!!", Toast.LENGTH_SHORT).show();
                     finish();
                 } else {
@@ -61,7 +71,15 @@ public class QuizActivity extends AppCompatActivity {
         nextQuestion();
     }
 
+    private void updatescore() {
+        FirebaseFirestore m_firestore = FirebaseFirestore.getInstance();
+        m_auth = FirebaseAuth.getInstance();
+        user = m_auth.getCurrentUser();
+        m_firestore.collection("users")
+                .document(user.getUid())
+                .update("Score", score);
 
+    }
 
     private void nextQuestion(){
         int question = mQuestionBank[mCurrentIndex].getQuestionId();
@@ -72,7 +90,7 @@ public class QuizActivity extends AppCompatActivity {
     private void checkAnswer(boolean userPress){
         boolean answerTrue = mQuestionBank[mCurrentIndex].isAnswer();
         if (userPress == answerTrue){
-            //increase the score
+            score = score+1;
             Toast.makeText(QuizActivity.this, "Correct Answer", Toast.LENGTH_SHORT).show();
             tButton.setClickable(false);
             fButton.setClickable(false);
@@ -81,6 +99,7 @@ public class QuizActivity extends AppCompatActivity {
             tButton.setClickable(false);
             fButton.setClickable(false);
         }
+
     }
 
 

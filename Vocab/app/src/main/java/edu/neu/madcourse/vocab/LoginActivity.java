@@ -17,6 +17,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.auth.User;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -24,6 +29,7 @@ public class LoginActivity extends AppCompatActivity {
     EditText m_password;
     Button m_loginButton;
     FirebaseAuth m_Auth;
+    String user_score;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
@@ -69,8 +75,35 @@ public class LoginActivity extends AppCompatActivity {
                         startActivity( intent );
                     }
 
-                    Intent intent = new Intent(LoginActivity.this,QuizLandingActivity.class);
-                    startActivity( intent );
+                    FirebaseFirestore db;
+                    CollectionReference users;
+                    db = FirebaseFirestore.getInstance();
+                    //String user_score;
+                    users = db.collection("users");
+                    //assert user != null;
+                    DocumentReference docRef = users.document(user.getUid());
+                    docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if(task.isSuccessful()) {
+                                DocumentSnapshot userRef = task.getResult();
+                                if(userRef.exists()) {
+                                    user_score = String.valueOf(userRef.get("Score"));
+
+
+                                    if (user_score.equals("-1")) {
+                                        Intent intent = new Intent(LoginActivity.this, QuizLandingActivity.class);
+                                        startActivity(intent);
+                                    } else {
+                                        //Shaili add activity here
+                                    }
+
+
+                                    }
+                            }
+                        }
+                    });
+
 
 
                 }

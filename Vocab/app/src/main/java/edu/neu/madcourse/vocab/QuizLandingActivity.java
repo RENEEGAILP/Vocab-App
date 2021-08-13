@@ -22,8 +22,12 @@ public class QuizLandingActivity extends AppCompatActivity {
 
     public void onTakeQuiz(View view)
     {
-        Intent intent = new Intent(this,QuizActivity.class);
-        startActivity( intent );
+        //Intent intent = getIntent();
+        //String str = intent.getStringExtra("user_score");
+        Intent intent1 = new Intent(this,QuizActivity.class);
+        startActivity( intent1 );
+        //intent1.putExtra("user_score",str);
+        //startActivity(intent1);
         quizButton.setClickable(false);
     }
 
