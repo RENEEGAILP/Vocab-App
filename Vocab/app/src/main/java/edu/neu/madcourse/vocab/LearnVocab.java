@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -32,12 +35,12 @@ public class LearnVocab extends NavigationDrawer {
     Button next, previous;
     int currWord = 0;
     FirebaseAuth m_Auth;
-    String user_score;
+    FirebaseUser user;
+    FirebaseFirestore m_firestore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_learn_vocab);
 
         LayoutInflater inflater = (LayoutInflater) this
                 .getSystemService( Context.LAYOUT_INFLATER_SERVICE);
@@ -48,10 +51,11 @@ public class LearnVocab extends NavigationDrawer {
         definition = findViewById(R.id.definition);
         next = findViewById(R.id.next);
         previous = findViewById(R.id.previous);
-        firebaseFirestore = FirebaseFirestore.getInstance();
         wordPresent = new HashMap<>();
+
+        m_firestore = FirebaseFirestore.getInstance();
         m_Auth = FirebaseAuth.getInstance();
-        FirebaseUser user = m_Auth.getCurrentUser();
+        user = m_Auth.getCurrentUser();
 
         Bundle bundle = getIntent().getExtras();
         String level = bundle.getString("Level");
@@ -74,6 +78,7 @@ public class LearnVocab extends NavigationDrawer {
             public void onClick(View v) {
                 if (currWord == wordPresent.size()-1) {
                     Toast.makeText(LearnVocab.this, level + " Completed!!", Toast.LENGTH_SHORT).show();
+                    updateLevel(level);
                     finish();
                 } else {
                     currWord = (currWord + 1) % wordPresent.size();
@@ -93,6 +98,12 @@ public class LearnVocab extends NavigationDrawer {
                 }
             }
         });
+    }
+
+    private void updateLevel(String level) {
+        m_firestore.collection("users")
+                .document(user.getUid())
+                .update(level, true);
     }
 
     private void showWord(){

@@ -40,6 +40,16 @@ public class LoginActivity extends AppCompatActivity {
         m_loginButton = findViewById( R.id.login_complete_button );
         m_loginButton.setOnClickListener( this::onLoginButtonClick );
         m_Auth = FirebaseAuth.getInstance();
+
+        FirebaseFirestore db;
+        CollectionReference users;
+        db = FirebaseFirestore.getInstance();
+        users = db.collection("users");
+
+        FirebaseUser user = m_Auth.getCurrentUser();
+        if (user != null) {
+            helper(user, users);
+        }
     }
 
     public void onLoginButtonClick(View view)
@@ -82,34 +92,8 @@ public class LoginActivity extends AppCompatActivity {
                     //String user_score;
                     users = db.collection("users");
                     //assert user != null;
-                    DocumentReference docRef = users.document(user.getUid());
-                    docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            if(task.isSuccessful()) {
-                                DocumentSnapshot userRef = task.getResult();
-                                if(userRef.exists()) {
-                                    user_score = String.valueOf(userRef.get("Score"));
 
-
-                                    if (user_score.equals("-1")) {
-                                        Intent intent = new Intent(LoginActivity.this, QuizLandingActivity.class);
-                                        startActivity(intent);
-                                        finish();
-                                    } else {
-                                        Intent intent = new Intent(LoginActivity.this, LevelVocab.class);
-                                        intent.putExtra("score", user_score);
-                                        startActivity(intent);
-                                        finish();
-                                    }
-
-
-                                    }
-                            }
-                        }
-                    });
-
-
+                    helper(user, users);
 
                 }
                 else {
@@ -120,5 +104,34 @@ public class LoginActivity extends AppCompatActivity {
             }
         } );
 
+    }
+
+    private void helper(FirebaseUser user, CollectionReference users) {
+        DocumentReference docRef = users.document(user.getUid());
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()) {
+                    DocumentSnapshot userRef = task.getResult();
+                    if(userRef.exists()) {
+                        user_score = String.valueOf(userRef.get("Score"));
+
+
+                        if (user_score.equals("-1")) {
+                            Intent intent = new Intent(LoginActivity.this, QuizLandingActivity.class);
+                            startActivity(intent);
+                            finish();
+                        } else {
+                            Intent intent = new Intent(LoginActivity.this, LevelVocab.class);
+                            intent.putExtra("score", user_score);
+                            startActivity(intent);
+                            finish();
+                        }
+
+
+                    }
+                }
+            }
+        });
     }
 }

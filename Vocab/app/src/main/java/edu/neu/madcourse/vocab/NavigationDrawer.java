@@ -137,6 +137,7 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
         firebaseAuth.signOut();
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(intent);
+        finish();
     }
 
     private void logoutConfirmButtonNoOnClick()

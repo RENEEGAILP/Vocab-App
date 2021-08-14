@@ -24,12 +24,17 @@ public class QuizActivity extends AppCompatActivity {
     private int score=0;
     FirebaseAuth m_auth;
     FirebaseUser user;
+    FirebaseFirestore m_firestore;
 
     private Questions[] mQuestionBank = new Questions[]{
             new Questions(R.string.question1, true),
             new Questions(R.string.question2, true),
             new Questions(R.string.question3, false),
-            new Questions(R.string.question4, true)
+            new Questions(R.string.question4, true),
+            new Questions(R.string.question5, true),
+            new Questions(R.string.question6, true),
+            new Questions(R.string.question7, false),
+            new Questions(R.string.question8, true)
     };
 
 
@@ -84,16 +89,39 @@ public class QuizActivity extends AppCompatActivity {
         if (mCurrentIndex == 3) {
             updatescore();
             Toast.makeText(QuizActivity.this, "Quiz Completed!!", Toast.LENGTH_SHORT).show();
+            checkScores();
             Intent intent = new Intent(QuizActivity.this,LevelVocab.class);
             intent.putExtra("score",score);
             startActivity( intent );
             finish();
         } else {
             mCurrentIndex = (mCurrentIndex + 1) % mQuestionBank.length;
-            System.out.println(mCurrentIndex);
             nextQuestion();
         }
 
+    }
+
+    private void checkScores() {
+        if (score > 2 && score <=4) {
+            m_firestore.collection("users")
+                    .document(user.getUid())
+                    .update("Beginner", true);
+        }
+
+        else if (score > 4 && score <=6) {
+            m_firestore.collection("users")
+                    .document(user.getUid())
+                    .update("Beginner", true);
+            m_firestore.collection("users")
+                    .document(user.getUid())
+                    .update("Intermediate", true);
+        }
+
+        else {
+            m_firestore.collection("users")
+                    .document(user.getUid())
+                    .update("Advanced", true);
+        }
     }
 
 

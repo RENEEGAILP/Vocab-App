@@ -108,6 +108,7 @@ public class EditProfileActivity extends NavigationDrawer {
         setHeaderText(fullName);
 
         progressBar.setVisibility( View.INVISIBLE );
+        finish();
 
     }
 

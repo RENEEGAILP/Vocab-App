@@ -1,5 +1,6 @@
 package edu.neu.madcourse.vocab;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
@@ -10,6 +11,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
@@ -19,11 +27,14 @@ public class LevelVocab extends NavigationDrawer {
     Button beginner, intermediate, advance, expert;
     FirebaseFirestore firebaseFirestore;
     HashMap<String, String> wordPresent;
+    String userLevel;
+    FirebaseAuth m_Auth;
+    FirebaseUser user;
+    int flag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_level_vocab);
 
         LayoutInflater inflater = (LayoutInflater) this
                 .getSystemService( Context.LAYOUT_INFLATER_SERVICE);
@@ -36,40 +47,24 @@ public class LevelVocab extends NavigationDrawer {
         advance = findViewById(R.id.advance);
         expert = findViewById(R.id.expert);
 
-        firebaseFirestore = FirebaseFirestore.getInstance();
         wordPresent = new HashMap<>();
 
-        Bundle bundle = getIntent().getExtras();
-        int score = bundle.getInt("score");
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        m_Auth = FirebaseAuth.getInstance();
+        user = m_Auth.getCurrentUser();
 
-        //int score = Integer.parseInt(scoreStr);
-        if (score >= 0 && score <=2) {
-            beginner.setEnabled(true);
-            intermediate.setEnabled(false);
-            advance.setEnabled(false);
-            expert.setEnabled(false);
+        FirebaseFirestore db;
+        CollectionReference users;
+        db = FirebaseFirestore.getInstance();
+        users = db.collection("users");
+
+        if (user != null) {
+            helper(user, users);
         }
 
-        else if (score > 2 && score <=4) {
-            beginner.setEnabled(true);
-            intermediate.setEnabled(true);
-            advance.setEnabled(false);
-            expert.setEnabled(false);
-        }
 
-        else if (score > 4 && score <=6) {
-            beginner.setEnabled(true);
-            intermediate.setEnabled(true);
-            advance.setEnabled(true);
-            expert.setEnabled(false);
-        }
+        updateLevels();
 
-        else {
-            beginner.setEnabled(true);
-            intermediate.setEnabled(true);
-            advance.setEnabled(true);
-            expert.setEnabled(true);
-        }
 
         beginner.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,7 +92,7 @@ public class LevelVocab extends NavigationDrawer {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(LevelVocab.this, LearnVocab.class);
-                intent.putExtra("Level", "Advance");
+                intent.putExtra("Level", "Advanced");
                 startActivity(intent);
             }
         });
@@ -112,4 +107,93 @@ public class LevelVocab extends NavigationDrawer {
         });
 
     }
+
+    private void updateLevels() {
+        if (flag == 0) {
+            beginner.setEnabled(true);
+            intermediate.setEnabled(false);
+            advance.setEnabled(false);
+            expert.setEnabled(false);
+        }
+        if (flag == 1) {
+            beginner.setEnabled(true);
+            intermediate.setEnabled(true);
+            advance.setEnabled(false);
+            expert.setEnabled(false);
+        }
+        else if (flag == 2) {
+            beginner.setEnabled(true);
+            intermediate.setEnabled(true);
+            advance.setEnabled(true);
+            expert.setEnabled(false);
+        }
+        else if (flag == 3) {
+            beginner.setEnabled(true);
+            intermediate.setEnabled(true);
+            advance.setEnabled(true);
+            expert.setEnabled(true);
+        }
+    }
+
+    private void checkScores() {
+        Bundle bundle = getIntent().getExtras();
+        int score = bundle.getInt("score");
+
+        if (score >= 0 && score <=2) {
+            beginner.setEnabled(true);
+            intermediate.setEnabled(false);
+            advance.setEnabled(false);
+            expert.setEnabled(false);
+        }
+
+        else if (score > 2 && score <=4) {
+            beginner.setEnabled(true);
+            intermediate.setEnabled(true);
+            advance.setEnabled(false);
+            expert.setEnabled(false);
+        }
+
+        else if (score > 4 && score <=6) {
+            beginner.setEnabled(true);
+            intermediate.setEnabled(true);
+            advance.setEnabled(true);
+            expert.setEnabled(false);
+        }
+
+        else {
+            beginner.setEnabled(true);
+            intermediate.setEnabled(true);
+            advance.setEnabled(true);
+            expert.setEnabled(true);
+        }
+    }
+
+    private void helper(FirebaseUser user, CollectionReference users) {
+
+        DocumentReference docRef = users.document(user.getUid());
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()) {
+                    DocumentSnapshot userRef = task.getResult();
+                    if(userRef.exists()) {
+                        userLevel = String.valueOf(userRef.get("Advanced"));
+                        if (String.valueOf(userRef.get("Advanced")).equals("true")) {
+                            flag = 3;
+                        }
+                        else if (String.valueOf(userRef.get("Intermediate")).equals("true")) {
+                            flag = 2;
+                        }
+                        else if (String.valueOf(userRef.get("Beginner")).equals("true")) {
+                            flag = 1;
+                        }
+                        else {
+                            flag = 0;
+                        }
+                    }
+                }
+            }
+        });
+    }
+
 }
