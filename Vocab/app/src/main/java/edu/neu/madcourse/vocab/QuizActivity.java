@@ -60,6 +60,9 @@ public class QuizActivity extends AppCompatActivity {
                 if (mCurrentIndex == 3) {
                     updatescore();
                     Toast.makeText(QuizActivity.this, "Quiz Completed!!", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(QuizActivity.this,LevelVocab.class);
+                    intent.putExtra("score",score);
+                    startActivity( intent );
                     finish();
                 } else {
                     mCurrentIndex = (mCurrentIndex + 1) % mQuestionBank.length;

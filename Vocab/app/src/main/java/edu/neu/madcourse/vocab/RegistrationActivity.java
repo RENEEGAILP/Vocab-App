@@ -187,6 +187,7 @@ public class RegistrationActivity extends AppCompatActivity {
                             m_progressBar.setVisibility( View.INVISIBLE );
                             Snackbar.make(view, "Successfully created user! Please login.", Snackbar.LENGTH_LONG).show();
                             startActivity(new Intent(getApplicationContext(),LoginActivity.class));
+                            finish();
 
                         } else {
                             // If sign in fails, display a message to the user.

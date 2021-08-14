@@ -73,6 +73,7 @@ public class LoginActivity extends AppCompatActivity {
                     {
                         Intent intent = new Intent(LoginActivity.this,AdminActivity.class);
                         startActivity( intent );
+                        finish();
                     }
 
                     FirebaseFirestore db;
@@ -94,9 +95,12 @@ public class LoginActivity extends AppCompatActivity {
                                     if (user_score.equals("-1")) {
                                         Intent intent = new Intent(LoginActivity.this, QuizLandingActivity.class);
                                         startActivity(intent);
+                                        finish();
                                     } else {
                                         Intent intent = new Intent(LoginActivity.this, LevelVocab.class);
+                                        intent.putExtra("score", user_score);
                                         startActivity(intent);
+                                        finish();
                                     }
 
 

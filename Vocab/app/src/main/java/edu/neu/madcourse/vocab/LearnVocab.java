@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -29,6 +30,7 @@ public class LearnVocab extends AppCompatActivity {
     Button next, previous;
     int currWord = 0;
     FirebaseAuth m_Auth;
+    String user_score;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +44,7 @@ public class LearnVocab extends AppCompatActivity {
         firebaseFirestore = FirebaseFirestore.getInstance();
         wordPresent = new HashMap<>();
         m_Auth = FirebaseAuth.getInstance();
+        FirebaseUser user = m_Auth.getCurrentUser();
 
         Bundle bundle = getIntent().getExtras();
         String level = bundle.getString("Level");
