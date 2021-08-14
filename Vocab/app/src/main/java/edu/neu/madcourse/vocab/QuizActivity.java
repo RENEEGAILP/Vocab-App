@@ -29,7 +29,11 @@ public class QuizActivity extends AppCompatActivity {
             new Questions(R.string.question1, true),
             new Questions(R.string.question2, true),
             new Questions(R.string.question3, false),
-            new Questions(R.string.question4, true)
+            new Questions(R.string.question4, true),
+            new Questions(R.string.question5, true),
+            new Questions(R.string.question6, true),
+            new Questions(R.string.question7, false),
+            new Questions(R.string.question8, true)
     };
 
 
@@ -81,7 +85,7 @@ public class QuizActivity extends AppCompatActivity {
             Toast.makeText(QuizActivity.this, "Incorrect Answer", Toast.LENGTH_SHORT).show();
         }
 
-        if (mCurrentIndex == 3) {
+        if (mCurrentIndex == 7) {
             updatescore();
             Toast.makeText(QuizActivity.this, "Quiz Completed!!", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(QuizActivity.this,LevelVocab.class);
