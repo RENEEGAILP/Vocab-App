@@ -62,10 +62,6 @@ public class LevelVocab extends NavigationDrawer {
             helper(user, users);
         }
 
-
-        updateLevels();
-
-
         beginner.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -108,6 +104,25 @@ public class LevelVocab extends NavigationDrawer {
 
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        m_Auth = FirebaseAuth.getInstance();
+        user = m_Auth.getCurrentUser();
+
+        FirebaseFirestore db;
+        CollectionReference users;
+        db = FirebaseFirestore.getInstance();
+        users = db.collection("users");
+
+        if (user != null) {
+            helper(user, users);
+        }
+
+    }
+
     private void updateLevels() {
         if (flag == 0) {
             beginner.setEnabled(true);
@@ -128,39 +143,6 @@ public class LevelVocab extends NavigationDrawer {
             expert.setEnabled(false);
         }
         else if (flag == 3) {
-            beginner.setEnabled(true);
-            intermediate.setEnabled(true);
-            advance.setEnabled(true);
-            expert.setEnabled(true);
-        }
-    }
-
-    private void checkScores() {
-        Bundle bundle = getIntent().getExtras();
-        int score = bundle.getInt("score");
-
-        if (score >= 0 && score <=2) {
-            beginner.setEnabled(true);
-            intermediate.setEnabled(false);
-            advance.setEnabled(false);
-            expert.setEnabled(false);
-        }
-
-        else if (score > 2 && score <=4) {
-            beginner.setEnabled(true);
-            intermediate.setEnabled(true);
-            advance.setEnabled(false);
-            expert.setEnabled(false);
-        }
-
-        else if (score > 4 && score <=6) {
-            beginner.setEnabled(true);
-            intermediate.setEnabled(true);
-            advance.setEnabled(true);
-            expert.setEnabled(false);
-        }
-
-        else {
             beginner.setEnabled(true);
             intermediate.setEnabled(true);
             advance.setEnabled(true);
@@ -191,6 +173,7 @@ public class LevelVocab extends NavigationDrawer {
                             flag = 0;
                         }
                     }
+                    updateLevels();
                 }
             }
         });

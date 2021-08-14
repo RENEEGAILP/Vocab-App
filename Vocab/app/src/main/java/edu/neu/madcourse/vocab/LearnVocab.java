@@ -30,7 +30,6 @@ import java.util.Objects;
 public class LearnVocab extends NavigationDrawer {
 
     TextView word, definition;
-    FirebaseFirestore firebaseFirestore;
     HashMap<String, String> wordPresent;
     Button next, previous;
     int currWord = 0;
@@ -121,7 +120,7 @@ public class LearnVocab extends NavigationDrawer {
     }
 
     private void practiceWords(int levelNum) {
-        firebaseFirestore.collection("words").get()
+        m_firestore.collection("words").get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {

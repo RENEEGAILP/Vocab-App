@@ -18,7 +18,6 @@ public class QuizActivity extends AppCompatActivity {
 
     private Button tButton;
     private Button fButton;
-    private Button mNextButton;
     private TextView questionTextView;
     private int mCurrentIndex = 0;
     private int score=0;
@@ -45,6 +44,9 @@ public class QuizActivity extends AppCompatActivity {
 
         questionTextView = (TextView) findViewById(R.id.questions);
         tButton = (Button) findViewById(R.id.trueButton);
+        m_firestore = FirebaseFirestore.getInstance();
+        m_auth = FirebaseAuth.getInstance();
+        user = m_auth.getCurrentUser();
         tButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -62,9 +64,6 @@ public class QuizActivity extends AppCompatActivity {
     }
 
     private void updatescore() {
-        FirebaseFirestore m_firestore = FirebaseFirestore.getInstance();
-        m_auth = FirebaseAuth.getInstance();
-        user = m_auth.getCurrentUser();
         m_firestore.collection("users")
                 .document(user.getUid())
                 .update("Score", score);
@@ -117,7 +116,13 @@ public class QuizActivity extends AppCompatActivity {
                     .update("Intermediate", true);
         }
 
-        else {
+        else if (score > 6 && score <=8) {
+            m_firestore.collection("users")
+                    .document(user.getUid())
+                    .update("Beginner", true);
+            m_firestore.collection("users")
+                    .document(user.getUid())
+                    .update("Intermediate", true);
             m_firestore.collection("users")
                     .document(user.getUid())
                     .update("Advanced", true);
