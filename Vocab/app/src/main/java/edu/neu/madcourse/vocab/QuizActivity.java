@@ -1,9 +1,19 @@
 package edu.neu.madcourse.vocab;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.text.Layout;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -14,16 +24,29 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-public class QuizActivity extends AppCompatActivity {
+import static java.lang.Thread.sleep;
+
+public class QuizActivity extends AppCompatActivity implements SensorEventListener {
 
     private Button tButton;
     private Button fButton;
     private TextView questionTextView;
+    private ConstraintLayout quizCardLayout;
     private int mCurrentIndex = 0;
     private int score=0;
     FirebaseAuth m_auth;
     FirebaseUser user;
     FirebaseFirestore m_firestore;
+    private static boolean flip = false;
+
+    private final int RED_COLOR = Color.parseColor("#FF7043");
+    private final int GREEN_COLOR = Color.parseColor("#8BC34A");
+    private final int WHITE_COLOR = Color.parseColor("#FFFFFF");
+
+    private SensorManager sensorManager;
+    private Sensor sensor;
+
+
 
     private Questions[] mQuestionBank = new Questions[]{
             new Questions(R.string.question1, true),
@@ -47,6 +70,12 @@ public class QuizActivity extends AppCompatActivity {
         m_firestore = FirebaseFirestore.getInstance();
         m_auth = FirebaseAuth.getInstance();
         user = m_auth.getCurrentUser();
+        quizCardLayout = findViewById(R.id.quiz_card_layout);
+
+        //declaring Sensor Manager and sensor type
+        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+
         tButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,6 +102,7 @@ public class QuizActivity extends AppCompatActivity {
     private void nextQuestion(){
         int question = mQuestionBank[mCurrentIndex].getQuestionId();
         questionTextView.setText(question);
+        quizCardLayout.setBackgroundColor(WHITE_COLOR);
         tButton.setClickable(true);
         fButton.setClickable(true);
     }
@@ -80,8 +110,10 @@ public class QuizActivity extends AppCompatActivity {
         boolean answerTrue = mQuestionBank[mCurrentIndex].isAnswer();
         if (userPress == answerTrue){
             score = score+1;
+            quizCardLayout.setBackgroundColor(GREEN_COLOR);
             Toast.makeText(QuizActivity.this, "Correct Answer", Toast.LENGTH_SHORT).show();
         }else{
+            quizCardLayout.setBackgroundColor(RED_COLOR);
             Toast.makeText(QuizActivity.this, "Incorrect Answer", Toast.LENGTH_SHORT).show();
         }
 
@@ -95,7 +127,16 @@ public class QuizActivity extends AppCompatActivity {
             finish();
         } else {
             mCurrentIndex = (mCurrentIndex + 1) % mQuestionBank.length;
-            nextQuestion();
+            final Handler handler = new Handler(Looper.getMainLooper());
+
+            // display the next question after a 1 second delay
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    nextQuestion();
+                }
+            }, 1000);
+
         }
 
     }
@@ -129,5 +170,56 @@ public class QuizActivity extends AppCompatActivity {
         }
     }
 
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        float x = event.values[0];
+        float y = event.values[1];
+        if (Math.abs(x) > Math.abs(y)) {
+            if (x < -0.1) {
+                if (flip){
+                    checkAnswer(false);
+                    flip = false;
+                }
+            }
+            if (x > 0.1) {
+                if(flip){
+                    checkAnswer(true);
+                    flip = false;
+                }
+            }
+        }
+//        else {
+//            if (y < 0) {
+//                flip = false;
+//            }
+//            if (y > 0) {
+//                flip = false;
+//            }
+//        }
+        if (x > (-1) && x < (1)
+                //&& y > (-1) && y < (1)
+        ) {
+            flip = true;
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        //unregister Sensor listener
+        sensorManager.unregisterListener(this);
+    }
 
 }
