@@ -95,7 +95,8 @@ public class LoginActivity extends AppCompatActivity {
                                         Intent intent = new Intent(LoginActivity.this, QuizLandingActivity.class);
                                         startActivity(intent);
                                     } else {
-                                        //Shaili add activity here
+                                        Intent intent = new Intent(LoginActivity.this, LevelVocab.class);
+                                        startActivity(intent);
                                     }
 
 
