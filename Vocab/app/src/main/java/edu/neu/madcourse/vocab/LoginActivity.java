@@ -2,12 +2,16 @@ package edu.neu.madcourse.vocab;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Layout;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -22,6 +26,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.auth.User;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -30,6 +35,8 @@ public class LoginActivity extends AppCompatActivity {
     Button m_loginButton;
     FirebaseAuth m_Auth;
     String user_score;
+    FirebaseFirestore db;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
@@ -41,7 +48,6 @@ public class LoginActivity extends AppCompatActivity {
         m_loginButton.setOnClickListener( this::onLoginButtonClick );
         m_Auth = FirebaseAuth.getInstance();
 
-        FirebaseFirestore db;
         CollectionReference users;
         db = FirebaseFirestore.getInstance();
         users = db.collection("users");
@@ -50,6 +56,22 @@ public class LoginActivity extends AppCompatActivity {
         if (user != null) {
             helper(user, users);
         }
+
+        ConstraintLayout loginLayout = findViewById( R.id.login_layout );
+        loginLayout.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                // hide keyboard
+                try{
+                    InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                    return false;
+                }catch (Exception e){
+                    return false;
+                }
+
+            }
+        });
     }
 
     public void onLoginButtonClick(View view)
@@ -86,7 +108,20 @@ public class LoginActivity extends AppCompatActivity {
                         finish();
                     }
 
-                    FirebaseFirestore db;
+                    FirebaseMessaging.getInstance().getToken().addOnCompleteListener( new OnCompleteListener<String>() {
+                        @Override
+                        public void onComplete(@NonNull Task<String> task) {
+                            if (task.isSuccessful()){
+                                String refreshToken = task.getResult();
+                                Log.d("REFRESH TOKEN:", "Retrieved refresh token: " + refreshToken);
+                                db.collection( "users" ).document(user.getUid()).update("device_token", refreshToken);
+
+                            }else{
+                                Log.d("REFRESH TOKEN:", "Error in retrieving refresh token");
+                            }
+                        }
+                    });
+
                     CollectionReference users;
                     db = FirebaseFirestore.getInstance();
                     //String user_score;

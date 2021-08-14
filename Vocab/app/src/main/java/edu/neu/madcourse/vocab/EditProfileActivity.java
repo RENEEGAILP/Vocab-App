@@ -12,7 +12,9 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -20,6 +22,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -30,8 +33,6 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Map;
 
 public class EditProfileActivity extends NavigationDrawer {
@@ -69,6 +70,22 @@ public class EditProfileActivity extends NavigationDrawer {
         saveChanges.setOnClickListener( this::onSaveChangesButtonClick );
         createItemInputDialog();
         initializeUserDetails();
+
+        ConstraintLayout editProfileLayout = findViewById( R.id.edit_profile_layout );
+        editProfileLayout.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                // hide keyboard
+                try{
+                    InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                    return false;
+                }catch (Exception e){
+                    return false;
+                }
+
+            }
+        });
     }
 
     void initializeUserDetails() {
@@ -105,7 +122,7 @@ public class EditProfileActivity extends NavigationDrawer {
         Bitmap profilePicBitmap = drawable.getBitmap();
 
         Users.updateUserInfo( fullName,profilePicBitmap );
-        setHeaderText(fullName);
+        setHeader(fullName,profilePicBitmap);
 
         progressBar.setVisibility( View.INVISIBLE );
         finish();
@@ -136,12 +153,12 @@ public class EditProfileActivity extends NavigationDrawer {
                 startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
             } catch (ActivityNotFoundException e) {
                 // display error state to the user
-                Snackbar.make(findViewById( R.id.layout ), "Could not capture image. Please try to upload!",
+                Snackbar.make(findViewById( R.id.edit_profile_layout ), "Could not capture image. Please try to upload!",
                         Snackbar.LENGTH_LONG).show();
             }
         }
         else{
-            Snackbar.make(findViewById( R.id.layout ), "No Camera found. Please try to upload!",
+            Snackbar.make(findViewById( R.id.edit_profile_layout ), "No Camera found. Please try to upload!",
                     Snackbar.LENGTH_LONG).show();
         }
         alertDialog.hide();

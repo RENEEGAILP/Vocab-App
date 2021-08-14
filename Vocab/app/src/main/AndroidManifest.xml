@@ -17,21 +17,32 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/ThemeNoActionBar.Vocab">
-        <activity android:name=".EditProfileActivity"></activity>
-        <activity android:name=".ProfileActivity" />
-        <activity android:name=".LearnVocab"></activity>
-        <activity android:name=".LevelVocab" />
-        <activity android:name=".NavigationDrawer" />
-        <activity android:name=".QuizLandingActivity" />
-        <activity android:name=".QuizActivity" />
-        <activity android:name=".AddWordActivity" />
-        <activity android:name=".AdminActivity" />
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".RegistrationActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".EditProfileActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity android:name=".ProfileActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".LearnVocab"
+            android:screenOrientation="portrait"></activity>
+        <activity android:name=".LevelVocab"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".NavigationDrawer"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".QuizLandingActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".QuizActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".AddWordActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".AdminActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".LoginActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".RegistrationActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

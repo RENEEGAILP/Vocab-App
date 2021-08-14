@@ -3,6 +3,7 @@ package edu.neu.madcourse.vocab;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
@@ -15,7 +16,9 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -69,6 +72,22 @@ public class RegistrationActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         m_firestore = FirebaseFirestore.getInstance();
 
+        ConstraintLayout registrationLayout = findViewById( R.id.registration_layout );
+        registrationLayout.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                // hide keyboard
+                try{
+                    InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                    return false;
+                }catch (Exception e){
+                    return false;
+                }
+
+            }
+        });
+
         createItemInputDialog();
     }
 
@@ -96,12 +115,12 @@ public class RegistrationActivity extends AppCompatActivity {
                 startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
             } catch (ActivityNotFoundException e) {
                 // display error state to the user
-                Snackbar.make(findViewById( R.id.layout ), "Could not capture image. Please try to upload!",
+                Snackbar.make(findViewById( R.id.registration_layout ), "Could not capture image. Please try to upload!",
                         Snackbar.LENGTH_LONG).show();
             }
         }
         else{
-             Snackbar.make(findViewById( R.id.layout ), "No Camera found. Please try to upload!",
+             Snackbar.make(findViewById( R.id.registration_layout ), "No Camera found. Please try to upload!",
                     Snackbar.LENGTH_LONG).show();
         }
         m_alertDialog.hide();

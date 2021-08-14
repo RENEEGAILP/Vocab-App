@@ -9,12 +9,14 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 
@@ -26,6 +28,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.auth.User;
 
 import java.util.Map;
 
@@ -39,6 +42,7 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
 
     FirebaseAuth firebaseAuth;
     FirebaseFirestore firestore;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +65,7 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
         firebaseAuth = FirebaseAuth.getInstance();
         firestore = FirebaseFirestore.getInstance();
 
-        setHeaderText();
+        setHeader();
 
         createLogoutConfirmDialog();
     }
@@ -84,7 +88,7 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
         return true;
     }
 
-    protected void setHeaderText() {
+    protected void setHeader() {
         CollectionReference users = firestore.collection( "users" );
         DocumentReference docRef = users.document( firebaseAuth.getCurrentUser().getUid() );
 
@@ -102,6 +106,12 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
                         TextView headerName = (TextView) headerView.findViewById( R.id.drawerHeader_textView );
                         headerName.setText( name );
 
+                        Bitmap bitmap = Users.getDecodedBitmapFromString(
+                                user_map.get( getString( R.string.users_db_profile ) ).toString() );
+                        ImageView profilePic = headerView.findViewById( R.id.profilepic_drawer );
+                        profilePic.setImageBitmap( bitmap );
+
+
                     }
                 } else {
                     Log.d( "Navigation Drawer", "Error getting document: ", task.getException() );
@@ -111,11 +121,14 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
 
     }
 
-    protected void setHeaderText(String headerText){
+    protected void setHeader(String headerText, Bitmap bitmap){
         NavigationView navigationView = findViewById( R.id.navigationView );
         View headerView = navigationView.getHeaderView( 0 );
         TextView headerName = (TextView) headerView.findViewById( R.id.drawerHeader_textView );
         headerName.setText( headerText );
+
+        ImageView profilePic = headerView.findViewById( R.id.profilepic_drawer );
+        profilePic.setImageBitmap( bitmap );
     }
 
     private void createLogoutConfirmDialog() {
