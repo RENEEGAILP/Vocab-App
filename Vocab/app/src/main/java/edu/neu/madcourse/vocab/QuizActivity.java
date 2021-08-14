@@ -53,24 +53,6 @@ public class QuizActivity extends AppCompatActivity {
                 checkAnswer(false);
             }
         });
-        mNextButton = (Button) findViewById(R.id.nextButton);
-        mNextButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mCurrentIndex == 3) {
-                    updatescore();
-                    Toast.makeText(QuizActivity.this, "Quiz Completed!!", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(QuizActivity.this,LevelVocab.class);
-                    intent.putExtra("score",score);
-                    startActivity( intent );
-                    finish();
-                } else {
-                    mCurrentIndex = (mCurrentIndex + 1) % mQuestionBank.length;
-                    System.out.println(mCurrentIndex);
-                    nextQuestion();
-                }
-            }
-        });
         nextQuestion();
     }
 
@@ -95,12 +77,21 @@ public class QuizActivity extends AppCompatActivity {
         if (userPress == answerTrue){
             score = score+1;
             Toast.makeText(QuizActivity.this, "Correct Answer", Toast.LENGTH_SHORT).show();
-            tButton.setClickable(false);
-            fButton.setClickable(false);
         }else{
             Toast.makeText(QuizActivity.this, "Incorrect Answer", Toast.LENGTH_SHORT).show();
-            tButton.setClickable(false);
-            fButton.setClickable(false);
+        }
+
+        if (mCurrentIndex == 3) {
+            updatescore();
+            Toast.makeText(QuizActivity.this, "Quiz Completed!!", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(QuizActivity.this,LevelVocab.class);
+            intent.putExtra("score",score);
+            startActivity( intent );
+            finish();
+        } else {
+            mCurrentIndex = (mCurrentIndex + 1) % mQuestionBank.length;
+            System.out.println(mCurrentIndex);
+            nextQuestion();
         }
 
     }

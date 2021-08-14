@@ -40,9 +40,9 @@ public class LevelVocab extends NavigationDrawer {
         wordPresent = new HashMap<>();
 
         Bundle bundle = getIntent().getExtras();
-        String scoreStr = bundle.getString("score");
+        int score = bundle.getInt("score");
 
-        int score = Integer.parseInt(scoreStr);
+        //int score = Integer.parseInt(scoreStr);
         if (score >= 0 && score <=2) {
             beginner.setEnabled(true);
             intermediate.setEnabled(false);
