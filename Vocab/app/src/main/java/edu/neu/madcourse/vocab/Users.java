@@ -11,11 +11,13 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 
 import java.io.ByteArrayOutputStream;
@@ -86,7 +88,21 @@ public class Users {
         documentReference.set( userObj ).addOnSuccessListener( new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
+
                 Log.d( "Create User","user Profile Created for " + user.getUid());
+                FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (task.isSuccessful()){
+                            String refreshToken = task.getResult();
+                            Log.d("REFRESH TOKEN:", "Retrieved refresh token: " + refreshToken);
+                            m_firestore.collection( "users" ).document(user.getUid()).update("device_token", refreshToken);
+
+                        }else{
+                            Log.d("REFRESH TOKEN:", "Error in retrieving refresh token");
+                        }
+                    }
+                });
             }
         } )
         .addOnFailureListener(new OnFailureListener() {

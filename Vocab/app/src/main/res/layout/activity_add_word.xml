@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/add_word_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".AddWordActivity">
@@ -71,7 +72,7 @@
         android:text="Add word"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.572"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/spinner" />
 
@@ -83,5 +84,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/level_textView"
         app:layout_constraintTop_toBottomOf="@+id/definition_editText" />
+
+    <Button
+        android:id="@+id/add_word_notification_Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Notify Users"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/add_word_complete_button" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
