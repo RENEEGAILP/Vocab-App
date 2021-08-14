@@ -2,8 +2,10 @@ package edu.neu.madcourse.vocab;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -12,7 +14,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 
-public class LevelVocab extends AppCompatActivity {
+public class LevelVocab extends NavigationDrawer {
 
     Button beginner, intermediate, advance, expert;
     FirebaseFirestore firebaseFirestore;
@@ -21,7 +23,13 @@ public class LevelVocab extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_level_vocab);
+        //setContentView(R.layout.activity_level_vocab);
+
+        LayoutInflater inflater = (LayoutInflater) this
+                .getSystemService( Context.LAYOUT_INFLATER_SERVICE);
+        View contentView = inflater.inflate(R.layout.activity_level_vocab, null, false);
+        drawerLayout.addView(contentView, 0);
+
 
         beginner = findViewById(R.id.beginner);
         intermediate = findViewById(R.id.intermediate);

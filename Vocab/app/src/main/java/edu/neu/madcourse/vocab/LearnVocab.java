@@ -3,7 +3,9 @@ package edu.neu.madcourse.vocab;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -22,7 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-public class LearnVocab extends AppCompatActivity {
+public class LearnVocab extends NavigationDrawer {
 
     TextView word, definition;
     FirebaseFirestore firebaseFirestore;
@@ -35,7 +37,12 @@ public class LearnVocab extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_learn_vocab);
+        //setContentView(R.layout.activity_learn_vocab);
+
+        LayoutInflater inflater = (LayoutInflater) this
+                .getSystemService( Context.LAYOUT_INFLATER_SERVICE);
+        View contentView = inflater.inflate(R.layout.activity_learn_vocab, null, false);
+        drawerLayout.addView(contentView, 0);
 
         word = findViewById(R.id.word);
         definition = findViewById(R.id.definition);

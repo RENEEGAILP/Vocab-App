@@ -21,7 +21,6 @@
         <activity android:name=".ProfileActivity" />
         <activity android:name=".LearnVocab"></activity>
         <activity android:name=".LevelVocab" />
-        <activity android:name=".ProfileActivity" />
         <activity android:name=".NavigationDrawer" />
         <activity android:name=".QuizLandingActivity" />
         <activity android:name=".QuizActivity" />
