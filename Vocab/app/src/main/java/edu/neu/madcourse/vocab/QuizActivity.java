@@ -86,7 +86,7 @@ public class QuizActivity extends AppCompatActivity {
             Toast.makeText(QuizActivity.this, "Incorrect Answer", Toast.LENGTH_SHORT).show();
         }
 
-        if (mCurrentIndex == 3) {
+        if (mCurrentIndex == 7) {
             updatescore();
             Toast.makeText(QuizActivity.this, "Quiz Completed!!", Toast.LENGTH_SHORT).show();
             checkScores();
