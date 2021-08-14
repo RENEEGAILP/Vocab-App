@@ -2,9 +2,11 @@ package edu.neu.madcourse.vocab;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,7 +26,7 @@ import java.util.HashMap;
 
 public class LevelVocab extends NavigationDrawer {
 
-    Button beginner, intermediate, advance, expert;
+    CardView beginner, intermediate, advance, expert;
     FirebaseFirestore firebaseFirestore;
     HashMap<String, String> wordPresent;
     String userLevel;
@@ -126,27 +128,43 @@ public class LevelVocab extends NavigationDrawer {
     private void updateLevels() {
         if (flag == 0) {
             beginner.setEnabled(true);
+            beginner.setCardBackgroundColor(Color.parseColor("#6495ed"));
             intermediate.setEnabled(false);
+            intermediate.setCardBackgroundColor(Color.parseColor("#bebebe"));
             advance.setEnabled(false);
+            advance.setCardBackgroundColor(Color.parseColor("#bebebe"));
             expert.setEnabled(false);
+            expert.setCardBackgroundColor(Color.parseColor("#bebebe"));
         }
         if (flag == 1) {
             beginner.setEnabled(true);
+            beginner.setCardBackgroundColor(Color.parseColor("#6495ed"));
             intermediate.setEnabled(true);
+            intermediate.setCardBackgroundColor(Color.parseColor("#6495ed"));
             advance.setEnabled(false);
+            advance.setCardBackgroundColor(Color.parseColor("#bebebe"));
             expert.setEnabled(false);
+            expert.setCardBackgroundColor(Color.parseColor("#bebebe"));
         }
         else if (flag == 2) {
             beginner.setEnabled(true);
+            beginner.setCardBackgroundColor(Color.parseColor("#6495ed"));
             intermediate.setEnabled(true);
+            intermediate.setCardBackgroundColor(Color.parseColor("#6495ed"));
             advance.setEnabled(true);
+            advance.setCardBackgroundColor(Color.parseColor("#6495ed"));
             expert.setEnabled(false);
+            expert.setCardBackgroundColor(Color.parseColor("#bebebe"));
         }
         else if (flag == 3) {
             beginner.setEnabled(true);
+            beginner.setCardBackgroundColor(Color.parseColor("#6495ed"));
             intermediate.setEnabled(true);
+            intermediate.setCardBackgroundColor(Color.parseColor("#6495ed"));
             advance.setEnabled(true);
+            advance.setCardBackgroundColor(Color.parseColor("#6495ed"));
             expert.setEnabled(true);
+            expert.setCardBackgroundColor(Color.parseColor("#6495ed"));
         }
     }
 
