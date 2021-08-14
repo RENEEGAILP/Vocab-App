@@ -52,11 +52,14 @@ public class LearnVocab extends AppCompatActivity {
         if (level.equals("Beginner")) {
             practiceWords(1);
         }
-        else if (level.equals("Advance")) {
+        else if (level.equals("Intermediate")) {
             practiceWords(2);
         }
-        else {
+        else if (level.equals("Advance")) {
             practiceWords(3);
+        }
+        else {
+            practiceWords(4);
         }
 
         next.setOnClickListener(new View.OnClickListener() {
