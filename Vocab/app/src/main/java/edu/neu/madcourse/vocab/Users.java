@@ -7,15 +7,19 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 
 import java.io.ByteArrayOutputStream;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,8 +34,8 @@ public class Users {
     private boolean m_expert;
     private boolean m_advanced;
 
-    private FirebaseFirestore m_firestore;
-    private FirebaseAuth m_auth;
+    static private FirebaseFirestore m_firestore = FirebaseFirestore.getInstance();
+    static private FirebaseAuth m_auth = FirebaseAuth.getInstance();
 
 
     public Users()
@@ -45,8 +49,7 @@ public class Users {
         m_intermediate = false;
         m_expert = false;
 
-        m_firestore = FirebaseFirestore.getInstance();
-        m_auth = FirebaseAuth.getInstance();
+
 
 
     }
@@ -94,7 +97,7 @@ public class Users {
         });
     }
 
-    private String getEncodedStringOfBitmap(Bitmap imageBitmap) {
+    static String getEncodedStringOfBitmap(Bitmap imageBitmap) {
         // First compress this image and then encode it
         int newHeight = (int) ( imageBitmap.getHeight() * (512.0 / imageBitmap.getWidth()) );
         Bitmap scaledImageBitmap = Bitmap.createScaledBitmap(imageBitmap, 512, newHeight, true);
@@ -104,11 +107,32 @@ public class Users {
         return Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);
     }
 
-    private Bitmap getDecodedBitmapFromString(String imageEncoded) {
+    static Bitmap getDecodedBitmapFromString(String imageEncoded) {
         byte[] decodedByteArray = Base64.decode(imageEncoded, Base64.DEFAULT);
         return BitmapFactory.decodeByteArray(decodedByteArray, 0, decodedByteArray.length);
     }
 
+    static void updateUserInfo(String name, Bitmap profilePic)
+    {
+        FirebaseUser user = m_auth.getCurrentUser();
+        DocumentReference documentReference= m_firestore.collection( "users" ).document(user.getUid());
+        documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()){
+                    DocumentSnapshot countRef = task.getResult();
+                    if(countRef.exists()){
+                        documentReference.update("Name",name );
+                        documentReference.update( "ProfilePic", getEncodedStringOfBitmap(profilePic));
+
+                    }
+                }else{
+                    Log.d("User Update : ", "Could not generate group code");
+                }
+            }
+        });
+
+    }
 
 
 }

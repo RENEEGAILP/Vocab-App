@@ -5,13 +5,13 @@
     android:id="@+id/layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RegistrationActivity">
+    tools:context=".EditProfileActivity">
 
     <TextView
-        android:id="@+id/create_account_text_view"
+        android:id="@+id/edit_account_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Create an Account"
+        android:text="Edit Account"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -21,7 +21,7 @@
         app:layout_constraintVertical_bias="0.113" />
 
     <EditText
-        android:id="@+id/name_register_editText"
+        android:id="@+id/name_edit_account_editText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
@@ -31,66 +31,41 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profile_register_imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/profile_edit_account_imageView" />
 
-    <EditText
-        android:id="@+id/emailid_register_editText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:ems="10"
-        android:hint="Email"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/name_register_editText" />
-
-    <EditText
-        android:id="@+id/password_register_password"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:ems="10"
-        android:hint="Password"
-        android:inputType="textPassword"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/emailid_register_editText" />
 
     <Button
-        android:id="@+id/register_complete_button"
+        android:id="@+id/edit_account_complete_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="Register"
+        android:text="Save changes"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password_register_password" />
+        app:layout_constraintTop_toBottomOf="@+id/name_edit_account_editText" />
 
     <ImageView
-        android:id="@+id/profile_register_imageView"
+        android:id="@+id/profile_edit_account_imageView"
         android:layout_width="125dp"
         android:layout_height="125dp"
         android:layout_marginTop="32dp"
         android:src="@drawable/default_profile"
         android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@id/name_register_editText"
+        app:layout_constraintBottom_toTopOf="@id/name_edit_account_editText"
         app:layout_constraintEnd_toEndOf="parent"
 
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/create_account_text_view" />
+        app:layout_constraintTop_toBottomOf="@+id/edit_account_text_view" />
 
     <ProgressBar
-        android:id="@+id/progressBar"
+        android:id="@+id/edit_account_progressBar"
         style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/register_complete_button" />
+        app:layout_constraintTop_toBottomOf="@+id/edit_account_complete_button" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

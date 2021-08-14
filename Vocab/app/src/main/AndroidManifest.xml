@@ -17,6 +17,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/ThemeNoActionBar.Vocab">
+        <activity android:name=".EditProfileActivity"></activity>
+        <activity android:name=".ProfileActivity" />
         <activity android:name=".LearnVocab"></activity>
         <activity android:name=".LevelVocab" />
         <activity android:name=".ProfileActivity" />

@@ -4,10 +4,13 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -47,6 +50,9 @@ public class ProfileActivity extends NavigationDrawer {
 
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
+
+        Button editProfileButton = findViewById( R.id.edit_account_button );
+        editProfileButton.setOnClickListener( this::onEditButtonClick );
 
         initializeViewItems();
         initializeUser();
@@ -91,6 +97,10 @@ public class ProfileActivity extends NavigationDrawer {
                         emailId.setText( user_map.get( getString(R.string.users_db_email) ).toString() );
                         score.setText( user_map.get( getString(R.string.users_db_score) ).toString() );
 
+                        Bitmap bitmap = Users.getDecodedBitmapFromString(
+                                user_map.get( getString(R.string.users_db_profile) ).toString() );
+                        profileImage.setImageBitmap( bitmap );
+
                         boolean level = (boolean)user_map.get( getString(R.string.users_db_beginner) );
                         if(level == true )
                         {
@@ -114,9 +124,16 @@ public class ProfileActivity extends NavigationDrawer {
 
                     }
                 }else{
-                    Log.d("Navigation Drawer", "Error getting document: ", task.getException());
+                    Log.d("View Profile", "Error getting document: ", task.getException());
                 }
             }
         });
     }
+
+    void onEditButtonClick(View view)
+    {
+        Intent editProfileIntent = new Intent(this,EditProfileActivity.class);
+        startActivity( editProfileIntent );
+    }
 }
+

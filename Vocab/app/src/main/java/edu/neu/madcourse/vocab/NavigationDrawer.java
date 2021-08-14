@@ -29,7 +29,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Map;
 
-public class NavigationDrawer extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class NavigationDrawer extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     protected DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
@@ -50,9 +50,9 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
         setSupportActionBar( toolbar );
 
         navigationView = findViewById( R.id.navigationView );
-        navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setNavigationItemSelectedListener( this );
 
-        actionBarDrawerToggle = new ActionBarDrawerToggle( this,drawerLayout,toolbar, R.string.open, R.string.close );
+        actionBarDrawerToggle = new ActionBarDrawerToggle( this, drawerLayout, toolbar, R.string.open, R.string.close );
 
         drawerLayout.addDrawerListener( actionBarDrawerToggle );
         actionBarDrawerToggle.setDrawerIndicatorEnabled( true );
@@ -66,13 +66,13 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
         createLogoutConfirmDialog();
     }
 
+
     @Override
-    public boolean onNavigationItemSelected(@NonNull  MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         drawerLayout.closeDrawer( GravityCompat.START );
-        switch (item.getItemId())
-        {
+        switch (item.getItemId()) {
             case R.id.profile_menuitem:
-                Intent profileIntent = new Intent(this,ProfileActivity.class);
+                Intent profileIntent = new Intent( this, ProfileActivity.class );
                 startActivity( profileIntent );
                 return true;
             case R.id.history_menuitem:
@@ -84,32 +84,38 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
         return true;
     }
 
-    protected void setHeaderText()
-    {
+    protected void setHeaderText() {
         CollectionReference users = firestore.collection( "users" );
-        DocumentReference docRef = users.document(firebaseAuth.getCurrentUser().getUid());
+        DocumentReference docRef = users.document( firebaseAuth.getCurrentUser().getUid() );
 
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        docRef.get().addOnCompleteListener( new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()){
+                if (task.isSuccessful()) {
                     DocumentSnapshot userRef = task.getResult();
-                    if(userRef.exists()){
+                    if (userRef.exists()) {
                         Map<String, Object> user_map = userRef.getData();
 
-                        String name =  user_map.get(getString(R.string.users_db_name)).toString();
-                        NavigationView navigationView = findViewById(R.id.navigationView);
-                        View headerView = navigationView.getHeaderView(0);
-                        TextView headerName = (TextView) headerView.findViewById(R.id.drawerHeader_textView);
+                        String name = user_map.get( getString( R.string.users_db_name ) ).toString();
+                        NavigationView navigationView = findViewById( R.id.navigationView );
+                        View headerView = navigationView.getHeaderView( 0 );
+                        TextView headerName = (TextView) headerView.findViewById( R.id.drawerHeader_textView );
                         headerName.setText( name );
 
                     }
-                }else{
-                    Log.d("Navigation Drawer", "Error getting document: ", task.getException());
+                } else {
+                    Log.d( "Navigation Drawer", "Error getting document: ", task.getException() );
                 }
             }
-        });
+        } );
 
+    }
+
+    protected void setHeaderText(String headerText){
+        NavigationView navigationView = findViewById( R.id.navigationView );
+        View headerView = navigationView.getHeaderView( 0 );
+        TextView headerName = (TextView) headerView.findViewById( R.id.drawerHeader_textView );
+        headerName.setText( headerText );
     }
 
     private void createLogoutConfirmDialog() {
