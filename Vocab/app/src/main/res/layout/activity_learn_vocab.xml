@@ -30,6 +30,7 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                android:textColor="#000000"
                 android:gravity="center"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
 
@@ -43,6 +44,7 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/word"
+                android:textColor="#000000"
                 android:gravity="center"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
 
