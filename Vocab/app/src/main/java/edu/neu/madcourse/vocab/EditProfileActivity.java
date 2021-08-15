@@ -25,6 +25,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseUser;
@@ -33,6 +35,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 public class EditProfileActivity extends NavigationDrawer {
@@ -121,13 +124,40 @@ public class EditProfileActivity extends NavigationDrawer {
         BitmapDrawable drawable = (BitmapDrawable) profilePic.getDrawable();
         Bitmap profilePicBitmap = drawable.getBitmap();
 
-        Users.updateUserInfo( fullName,profilePicBitmap );
-        setHeader(fullName,profilePicBitmap);
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        DocumentReference documentReference= firestore.collection( "users" ).document(user.getUid());
+        documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot countRef = task.getResult();
+                    if (countRef.exists()) {
+                        Map<String, Object> userObj = new HashMap<>();
+                        userObj.put( getString( R.string.users_db_name ), fullName );
+                        userObj.put( getString( R.string.users_db_profile ), Users.getEncodedStringOfBitmap( profilePicBitmap ) );
+                        documentReference.update( userObj ).addOnSuccessListener( new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                Log.d( "User Update : ", "Successful" );
+                                progressBar.setVisibility( View.INVISIBLE );
+                                finish();
 
-        progressBar.setVisibility( View.INVISIBLE );
-        finish();
+                            }
+                        } )
+                                .addOnFailureListener( new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.d( "User Update : ", "Failed" );
+                                    }
+                                } );
+                    }
+                }
+
+            }
+        });
 
     }
+
 
     public void onProfileImageClick(View view) {
         alertDialog.show();

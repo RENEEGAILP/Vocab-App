@@ -55,8 +55,14 @@ public class ProfileActivity extends NavigationDrawer {
         editProfileButton.setOnClickListener( this::onEditButtonClick );
 
         initializeViewItems();
-        initializeUser();
+        //initializeUser();
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        initializeUser();
     }
 
     void initializeViewItems()

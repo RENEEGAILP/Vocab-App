@@ -65,11 +65,15 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
         firebaseAuth = FirebaseAuth.getInstance();
         firestore = FirebaseFirestore.getInstance();
 
-        setHeader();
 
-        createLogoutConfirmDialog();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        setHeader();
+        createLogoutConfirmDialog();
+    }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {

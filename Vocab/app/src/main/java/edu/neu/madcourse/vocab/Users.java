@@ -142,27 +142,7 @@ public class Users {
         return BitmapFactory.decodeByteArray(decodedByteArray, 0, decodedByteArray.length);
     }
 
-    static void updateUserInfo(String name, Bitmap profilePic)
-    {
-        FirebaseUser user = m_auth.getCurrentUser();
-        DocumentReference documentReference= m_firestore.collection( "users" ).document(user.getUid());
-        documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()){
-                    DocumentSnapshot countRef = task.getResult();
-                    if(countRef.exists()){
-                        documentReference.update("Name",name );
-                        documentReference.update( "ProfilePic", getEncodedStringOfBitmap(profilePic));
 
-                    }
-                }else{
-                    Log.d("User Update : ", "Could not generate group code");
-                }
-            }
-        });
-
-    }
 
 
 }

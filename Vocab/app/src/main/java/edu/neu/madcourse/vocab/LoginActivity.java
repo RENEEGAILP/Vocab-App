@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -25,7 +26,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.auth.User;
+
 import com.google.firebase.messaging.FirebaseMessaging;
 
 
@@ -134,8 +135,8 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 else {
                     Log.w("Login", "signInWithEmailAndPassword:failure", task.getException());
-                    Toast.makeText(LoginActivity.this, "Authentication failed.",
-                            Toast.LENGTH_SHORT).show();
+                    Snackbar.make(view, "Error in Login: " + task.getException().getMessage(),
+                            Snackbar.LENGTH_LONG).show();
                 }
             }
         } );
