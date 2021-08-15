@@ -71,7 +71,7 @@ public class AddWordActivity extends AppCompatActivity {
     }
 
     public void onNotifyUsersButtonClick(View view){
-        NotificationService.sendNotificationToAllUsers("New words have been added! Take the quiz to find out!");
+        NotificationService.sendNotificationToAllUsers("New words have been added! Practice now!");
     }
 
 
