@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         //Launch Login Activity
         Intent intent = new Intent(this,LoginActivity.class);
         startActivity( intent );
-        finish();
+        //finish();
     }
 
     public void onRegisterClick(View view)
@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
         //Launch registration activity for new user
         Intent intent = new Intent(this,RegistrationActivity.class);
         startActivity( intent );
-        finish();
+        //finish();
     }
 
     @Override
