@@ -35,6 +35,10 @@ public class Users {
     private boolean m_intermediate;
     private boolean m_expert;
     private boolean m_advanced;
+    private String s_beginner;
+    private String s_intermediate;
+    private String s_expert;
+    private String s_advanced;
 
     static private FirebaseFirestore m_firestore = FirebaseFirestore.getInstance();
     static private FirebaseAuth m_auth = FirebaseAuth.getInstance();
@@ -50,8 +54,10 @@ public class Users {
         m_advanced = false;
         m_intermediate = false;
         m_expert = false;
-
-
+        s_beginner = "";
+        s_advanced = "";
+        s_intermediate = "";
+        s_expert = "";
 
 
     }
@@ -65,6 +71,10 @@ public class Users {
         m_advanced = false;
         m_intermediate = false;
         m_expert = false;
+        s_beginner = "B0";
+        s_advanced = "A0";
+        s_intermediate = "I0";
+        s_expert = "E0";
         
         m_firestore = FirebaseFirestore.getInstance();
         m_auth = FirebaseAuth.getInstance();
@@ -84,6 +94,10 @@ public class Users {
         userObj.put( "Intermediate", m_intermediate );
         userObj.put( "Advanced", m_advanced );
         userObj.put( "Expert", m_expert );
+        userObj.put( "BeginnerStatus", s_beginner );
+        userObj.put( "IntermediateStatus", s_intermediate );
+        userObj.put( "AdvancedStatus", s_advanced );
+        userObj.put( "ExpertStatus", s_expert );
 
         documentReference.set( userObj ).addOnSuccessListener( new OnSuccessListener<Void>() {
             @Override

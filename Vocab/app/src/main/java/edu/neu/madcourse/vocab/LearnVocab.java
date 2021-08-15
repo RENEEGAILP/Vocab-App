@@ -36,6 +36,10 @@ public class LearnVocab extends NavigationDrawer {
     FirebaseAuth m_Auth;
     FirebaseUser user;
     FirebaseFirestore m_firestore;
+    String flag;
+    String level;
+    String userLevel;
+    FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,20 +61,13 @@ public class LearnVocab extends NavigationDrawer {
         user = m_Auth.getCurrentUser();
 
         Bundle bundle = getIntent().getExtras();
-        String level = bundle.getString("Level");
+        level = bundle.getString("Level");
 
-        if (level.equals("Beginner")) {
-            practiceWords(1);
-        }
-        else if (level.equals("Intermediate")) {
-            practiceWords(2);
-        }
-        else if (level.equals("Advance")) {
-            practiceWords(3);
-        }
-        else {
-            practiceWords(4);
-        }
+        CollectionReference users;
+        db = FirebaseFirestore.getInstance();
+        users = db.collection("users");
+
+        helper(user, users);
 
         next.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,6 +75,7 @@ public class LearnVocab extends NavigationDrawer {
                 if (currWord == wordPresent.size()-1) {
                     Toast.makeText(LearnVocab.this, level + " Completed!!", Toast.LENGTH_SHORT).show();
                     updateLevel(level);
+                    flag =  ""+level.charAt(0)+currWord;
                     finish();
                 } else {
                     currWord = (currWord + 1) % wordPresent.size();
@@ -97,6 +95,47 @@ public class LearnVocab extends NavigationDrawer {
                 }
             }
         });
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        flag =  ""+level.charAt(0)+currWord;
+        m_firestore.collection("users")
+                .document(user.getUid())
+                .update(level+"Status", flag);
+    }
+
+    private void helper(FirebaseUser user, CollectionReference users) {
+        DocumentReference docRef = users.document(user.getUid());
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()) {
+                    DocumentSnapshot userRef = task.getResult();
+                    if(userRef.exists()) {
+                        userLevel = String.valueOf(userRef.get(level+"Status"));
+                        currWord = Integer.parseInt(userLevel.substring(1));
+                        checkLevel();
+                    }
+                }
+            }
+        });
+    }
+
+    private void checkLevel() {
+        if (level.equals("Beginner")) {
+            practiceWords(1);
+        }
+        else if (level.equals("Intermediate")) {
+            practiceWords(2);
+        }
+        else if (level.equals("Advanced")) {
+            practiceWords(3);
+        }
+        else {
+            practiceWords(4);
+        }
     }
 
     private void updateLevel(String level) {
