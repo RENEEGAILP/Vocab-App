@@ -7,10 +7,15 @@
         android:icon="@drawable/ic_baseline_account_circle_24"
         android:title="Profile" />
     <item
+        android:id="@+id/learn_menuitem"
+        android:icon="@drawable/ic_baseline_library_books_24"
+        android:title="Learn" />
+    <item
         android:id="@+id/history_menuitem"
         android:icon="@drawable/ic_baseline_history_24"
         android:title="History" />
     <item
         android:id="@+id/logout_menuitem"
+        android:icon="@drawable/ic_log_out"
         android:title="Logout" />
 </menu>

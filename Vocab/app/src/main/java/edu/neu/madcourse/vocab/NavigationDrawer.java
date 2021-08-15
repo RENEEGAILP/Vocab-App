@@ -88,6 +88,10 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
             case R.id.logout_menuitem:
                 logoutConfirmDialog.show();
                 return true;
+            case R.id.learn_menuitem:
+                Intent intent = new Intent(this, LevelVocab.class);
+                startActivity(intent);
+                return true;
         }
         return true;
     }
