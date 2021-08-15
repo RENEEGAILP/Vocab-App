@@ -60,6 +60,10 @@ public class LearnVocab extends NavigationDrawer {
         m_Auth = FirebaseAuth.getInstance();
         user = m_Auth.getCurrentUser();
 
+        if(user == null) {
+            finish();
+        }
+
         Bundle bundle = getIntent().getExtras();
         level = bundle.getString("Level");
 
