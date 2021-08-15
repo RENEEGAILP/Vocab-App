@@ -101,7 +101,14 @@ public class ProfileActivity extends NavigationDrawer {
 
                         name.setText( user_map.get(getString(R.string.users_db_name)).toString() );
                         emailId.setText( user_map.get( getString(R.string.users_db_email) ).toString() );
-                        score.setText( user_map.get( getString(R.string.users_db_score) ).toString() );
+                        String scoreVal = user_map.get( getString(R.string.users_db_score) ).toString();
+                        if(scoreVal.equals( "-1" )) {
+                            score.setText( "0" );
+                        }
+                        else {
+                            score.setText( scoreVal );
+                        }
+
 
                         Bitmap bitmap = Users.getDecodedBitmapFromString(
                                 user_map.get( getString(R.string.users_db_profile) ).toString() );
