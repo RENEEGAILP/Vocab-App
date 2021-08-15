@@ -119,7 +119,7 @@ public class QuizActivity extends AppCompatActivity implements SensorEventListen
 
         if (mCurrentIndex == 7) {
             updatescore();
-            Toast.makeText(QuizActivity.this, "Quiz Completed!!", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(QuizActivity.this, "Quiz Completed!!", Toast.LENGTH_SHORT).show();
             checkScores();
             Intent intent = new Intent(QuizActivity.this,LevelVocab.class);
             intent.putExtra("score",score);
@@ -142,10 +142,15 @@ public class QuizActivity extends AppCompatActivity implements SensorEventListen
     }
 
     private void checkScores() {
+        if (score <= 2) {
+            Toast.makeText(QuizActivity.this, "Well done! You have unlocked 1 level!!", Toast.LENGTH_SHORT).show();
+        }
+
         if (score > 2 && score <=4) {
             m_firestore.collection("users")
                     .document(user.getUid())
                     .update("Beginner", true);
+            Toast.makeText(QuizActivity.this, "Well done! You have unlocked 2 levels!!", Toast.LENGTH_SHORT).show();
         }
 
         else if (score > 4 && score <=6) {
@@ -155,6 +160,7 @@ public class QuizActivity extends AppCompatActivity implements SensorEventListen
             m_firestore.collection("users")
                     .document(user.getUid())
                     .update("Intermediate", true);
+            Toast.makeText(QuizActivity.this, "Well done! You have unlocked 3 levels!!", Toast.LENGTH_SHORT).show();
         }
 
         else if (score > 6 && score <=8) {
@@ -167,6 +173,7 @@ public class QuizActivity extends AppCompatActivity implements SensorEventListen
             m_firestore.collection("users")
                     .document(user.getUid())
                     .update("Advanced", true);
+            Toast.makeText(QuizActivity.this, "Well done! You have unlocked 4 levels!!", Toast.LENGTH_SHORT).show();
         }
     }
 
