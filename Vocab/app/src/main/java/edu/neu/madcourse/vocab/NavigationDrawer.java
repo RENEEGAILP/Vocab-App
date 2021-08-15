@@ -83,8 +83,6 @@ public class NavigationDrawer extends AppCompatActivity implements NavigationVie
                 Intent profileIntent = new Intent( this, ProfileActivity.class );
                 startActivity( profileIntent );
                 return true;
-            case R.id.history_menuitem:
-                return true;
             case R.id.logout_menuitem:
                 logoutConfirmDialog.show();
                 return true;
